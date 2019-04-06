@@ -1,19 +1,37 @@
 import { Injectable } from '@nestjs/common';
-
-let url: string = 'mongodb://localhost:27017';
+import { IRoute } from '../../../models/iRoute';
+import { IPath } from '../../../models/iPath';
+import { IRide } from '../../../models/iRide';
+import { IPreference } from '../../../models/iPreference';
+import { IUser } from '../../../models/iUser';
 
 @Injectable()
 export class MongoService {
-    get(id ) {
-        return 'Get';
-    }
+  routeContainer: IRoute [];
+  pathContainer: IPath [];
+  rideContainer: IRide [];
+  preferenceContainer: IPreference[];
+  userContainer: IUser[];
+  db = {
+    route: [],
+    path: [],
+    ride: [],
+    preference: [],
+    user: [],
+  };
+  url = 'mongodb://127.0.0.1:27017';
+  dbName = 'ponton';
 
-    getAll() {
-        return 'GetAll';
-    }
+  get(collectionName, id) {
+    return null;
+  }
 
-    create(user) {
-        return 'Create';
-    }
+  getAll(collectionName) {
+    return null;
+  }
+
+  create(collectionName, docs) {
+    return null;
+  }
 
 }

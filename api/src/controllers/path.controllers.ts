@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { Path } from '../../../models/path';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { IPath } from '../../../models/iPath';
 
 @Controller('Paths')
 export class PathController {
   @Post()
-  create(@Body() path: Path) {
+  create(@Body() path: IPath) {
     return 'This action adds a new path';
   }
 
@@ -28,7 +19,7 @@ export class PathController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() path: Path) {
+  update(@Param('id') id: string, @Body() path: IPath) {
     return `This action updates a #${id} path`;
   }
 
