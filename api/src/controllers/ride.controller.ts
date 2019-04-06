@@ -10,7 +10,7 @@ export class RideController {
 
   @Get()
   findAll() {
-    return `This action returns all rides items`;
+    return `This action returns all ride items`;
   }
 
   @Get(':id')

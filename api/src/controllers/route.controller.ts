@@ -25,6 +25,6 @@ export class RouteController {
 
   @Delete(':id')
   remove(@Param('id') id: string) {
-    return `This action removes a #${id} user`;
+    return `This action removes a #${id} route`;
   }
 }
