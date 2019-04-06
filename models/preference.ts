@@ -1,5 +1,6 @@
 export enum PreferenceType {
-  Location,
+  PickupLocation,
+  DropoffLocation,
   PickupTime,
   DropoffTime,
   Periodic,
@@ -11,12 +12,20 @@ export interface Preference<T = object> {
   properties: T;
 }
 
-export type LocationPreference = {
-  kind: PreferenceType.Location;
+export type PickupLocationPreference = {
+  kind: PreferenceType.PickupLocation;
 } & Preference<{
   lat: number;
   lon: number;
-  offset: number;
+  radius: number;
+}>;
+
+export type DropoffLocationPreference = {
+  kind: PreferenceType.DropoffLocation;
+} & Preference<{
+  lat: number;
+  lon: number;
+  radius: number;
 }>;
 
 export type PickupTimePreference = {
