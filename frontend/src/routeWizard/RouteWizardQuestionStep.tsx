@@ -6,22 +6,28 @@ const { Title } = Typography;
 
 export const Buttons = styled.div`
   & > * {
-    min-width: 8rem;
+    min-width: 12rem;
     margin: 0.5rem;
   }
 `;
 
-export const RouteWizardFirstStep = () => {
+export const RouteWizardQuestionStep = ({
+  question,
+  onPick,
+}: {
+  question: string;
+  onPick: (result: boolean) => void;
+}) => {
   return (
     <div style={{ textAlign: 'center' }}>
-      <Title>Czy wykonujesz tę trasę codziennie?</Title>
+      <Title>{question}</Title>
 
       <Buttons>
-        <Button type="primary" size="large">
+        <Button type="primary" size="large" onClick={() => onPick(true)}>
           TAK
         </Button>
 
-        <Button type="default" size="large">
+        <Button type="default" size="large" onClick={() => onPick(false)}>
           NIE
         </Button>
       </Buttons>
