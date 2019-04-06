@@ -1,5 +1,5 @@
-import { IPath } from './IPath';
-import { IRoute } from './IRoute';
+import { IPath } from './iPath';
+import { IRoute } from './iRoute';
 
 export interface IRide {
   id?: string;

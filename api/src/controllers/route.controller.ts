@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { Route } from '../../../models/route';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { IRoute } from '../../../models/iRoute';
 
 @Controller('routes')
 export class RouteController {
   @Post()
-  create(@Body() route: Route) {
+  create(@Body() route: IRoute) {
     return 'This action adds a new route';
   }
 
@@ -28,7 +19,7 @@ export class RouteController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() route: Route) {
+  update(@Param('id') id: string, @Body() route: IRoute) {
     return `This action updates a #${id} route`;
   }
 }
