@@ -18,10 +18,10 @@ export class UserService {
   }
 
   update(id: string, user: User) {
-    const newUsers = this.users.map(oldUser =>
+    const updatedUsers = this.users.map(oldUser =>
       id === oldUser.id ? user : oldUser,
     );
 
-    this.users = newUsers;
+    this.users = updatedUsers;
   }
 }

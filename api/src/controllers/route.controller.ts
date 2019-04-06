@@ -1,4 +1,13 @@
-import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { Route } from '../../../models/route';
 
 @Controller('routes')
@@ -21,10 +30,5 @@ export class RouteController {
   @Put(':id')
   update(@Param('id') id: string, @Body() route: Route) {
     return `This action updates a #${id} route`;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} route`;
   }
 }
