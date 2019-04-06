@@ -6,15 +6,14 @@ export enum PreferenceType {
   Periodic,
 }
 
-export interface Preference<T = object> {
-  id?: string;
+export interface IPreference<T = object> {
   kind: PreferenceType;
   properties: T;
 }
 
 export type PickupLocationPreference = {
   kind: PreferenceType.PickupLocation;
-} & Preference<{
+} & IPreference<{
   lat: number;
   lon: number;
   radius: number;
@@ -22,7 +21,7 @@ export type PickupLocationPreference = {
 
 export type DropoffLocationPreference = {
   kind: PreferenceType.DropoffLocation;
-} & Preference<{
+} & IPreference<{
   lat: number;
   lon: number;
   radius: number;
@@ -30,18 +29,18 @@ export type DropoffLocationPreference = {
 
 export type PickupTimePreference = {
   kind: PreferenceType.PickupTime;
-} & Preference<{
+} & IPreference<{
   time: { hour: number; minute: number };
   offset: { before: number; after: number };
 }>;
 
 export type DropOffTimePreference = {
   kind: PreferenceType.DropoffTime;
-} & Preference<{
+} & IPreference<{
   time: { hour: number; minute: number };
   offset: { before: number; after: number };
 }>;
 
 export type PeriodicPreference = {
   kind: PreferenceType.Periodic;
-} & Preference<boolean>;
+} & IPreference<boolean>;
