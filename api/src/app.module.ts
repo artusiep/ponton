@@ -8,15 +8,15 @@ import { UserService } from './services/user.service';
 import { MongoService } from './services/mongo.service';
 
 @Module({
-    imports: [],
-    controllers: [
-        UserController,
-        RideController,
-        RouteController,
-        PathController,
-        PreferenceController,
-    ],
-    providers: [UserService, MongoService],
+  imports: [],
+  controllers: [
+    UserController,
+    RideController,
+    RouteController,
+    PathController,
+    PreferenceController,
+  ],
+  providers: [UserService, MongoService],
 })
 export class AppModule {
 }
