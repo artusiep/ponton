@@ -1,4 +1,13 @@
-import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Query,
+  Post,
+  Body,
+  Put,
+  Param,
+  Delete,
+} from '@nestjs/common';
 import { Ride } from '../../../models/ride';
 
 @Controller('rides')
@@ -21,10 +30,5 @@ export class RideController {
   @Put(':id')
   update(@Param('id') id: string, @Body() ride: Ride) {
     return `This action updates a #${id} ride`;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} ride`;
   }
 }
