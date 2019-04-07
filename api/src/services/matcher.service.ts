@@ -36,7 +36,7 @@ export class MatcherService {
       distances += String(element.distance) + ' ';
     });
 
-    return distances;
+    return "TEST";
   }
 
   private getCoordsFor(route: IRoute): [Coord, Coord] {
