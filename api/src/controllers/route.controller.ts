@@ -1,11 +1,13 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { IRoute } from '../../../models/iRoute';
+import { MatcherService } from '../services/matcher.service';
 
 @Controller('routes')
 export class RouteController {
+  constructor(private readonly matcherService: MatcherService) {}
   @Post()
   create(@Body() route: IRoute) {
-    return 'This action adds a new route';
+    return this.matcherService.test(route);
   }
 
   @Get()

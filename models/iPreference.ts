@@ -1,10 +1,4 @@
-export enum PreferenceType {
-  PickupLocation,
-  DropoffLocation,
-  PickupTime,
-  DropoffTime,
-  Periodic,
-}
+export type PreferenceType = 'PickupLocation' | 'DropoffLocation' | 'PickupTime' | 'DropoffTime' | 'Periodic' | 'Driver';
 
 export interface IPreference<T = object> {
   kind: PreferenceType;
@@ -12,7 +6,7 @@ export interface IPreference<T = object> {
 }
 
 export type PickupLocationPreference = {
-  kind: PreferenceType.PickupLocation;
+  kind: 'PickupLocation';
 } & IPreference<{
   lat: number;
   lon: number;
@@ -20,7 +14,7 @@ export type PickupLocationPreference = {
 }>;
 
 export type DropoffLocationPreference = {
-  kind: PreferenceType.DropoffLocation;
+  kind: 'DropoffLocation';
 } & IPreference<{
   lat: number;
   lon: number;
@@ -28,19 +22,19 @@ export type DropoffLocationPreference = {
 }>;
 
 export type PickupTimePreference = {
-  kind: PreferenceType.PickupTime;
+  kind: 'PickupTime';
 } & IPreference<{
   time: { hour: number; minute: number };
   offset: { before: number; after: number };
 }>;
 
 export type DropOffTimePreference = {
-  kind: PreferenceType.DropoffTime;
+  kind: 'DropoffTime';
 } & IPreference<{
   time: { hour: number; minute: number };
   offset: { before: number; after: number };
 }>;
 
 export type PeriodicPreference = {
-  kind: PreferenceType.Periodic;
+  kind: 'Periodic';
 } & IPreference<boolean>;
