@@ -13,13 +13,12 @@ export class RouteController {
   @Post()
   async create(@Body() route: IRoute) {
     const dbRoute = await this.routeService.create(route);
-    // this.matcherService.handleNewRoute();
+    this.matcherService.handleNewRoute();
     return dbRoute;
   }
 
   @Get()
   findAll() {
-    this.matcherService.handleNewRoute();
     return this.routeService.findAll();
   }
   //

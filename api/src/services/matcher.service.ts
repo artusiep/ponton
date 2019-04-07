@@ -18,14 +18,13 @@ export class MatcherService {
     private readonly httpService: HttpService,
     private readonly routeService: RouteService,
     private readonly rideService: RideService,
-  ) {
-  }
+  ) {}
 
-  getBestMatches(route: IRoute) {
-  }
+  getBestMatches(route: IRoute) {}
 
   async handleNewRoute() {
     const routes = await this.routeService.findAll().exec();
+
     const coordinates = routes.map(r => this.getCoordsFor(r));
     if (!(coordinates.length > 0)) {
       return;
@@ -34,16 +33,20 @@ export class MatcherService {
     const [left, right] = coordinates[0].split(';');
     const coords = `${left}${
       routes.length >= 2 ? ';' + coordinates.slice(1).join(';') : ''
-      };${right}`;
+    };${right}`;
 
     const distributions = `${
       routes.length >= 2
         ? Array(Math.floor(routes.length - 1))
-          .fill(null)
-          .map((_, i) => `${i * 2 + 1},${i * 2 + 2}`)
-          .join(';')
+            .fill(null)
+            .map((_, i) => `${i * 2 + 1},${i * 2 + 2}`)
+            .join(';')
         : ''
-      }`;
+    }`;
+
+    const radiuses = routes.map(x =>
+      x.preferences.find(p => p.kind === 'PickupLocation'),
+    );
 
     console.log(
       `${MatcherService.apiUrl}/${coords}?distributions=${distributions}`,
@@ -51,9 +54,7 @@ export class MatcherService {
 
     this.httpService
       .get(
-        `${
-          MatcherService.apiUrl
-          }/${coords}?distributions=${distributions}&radiuses=1500;1500;1500;1500`,
+        `${MatcherService.apiUrl}/${coords}?distributions=${distributions}`,
         {
           params: {
             roundtrip: 'false',
@@ -66,14 +67,21 @@ export class MatcherService {
           },
         },
       )
-      .subscribe(response => {
+      .subscribe(async response => {
         console.log(response.data);
         const data = response.data;
-        this.rideService.create({
-          id: 'blah',
-          path: data,
-          routes,
-        });
+        const ride = await this.rideService.findLast(routes[0].user.id).exec();
+        const trip = ride.path.trips[0];
+        const prevDist = trip ? trip.distance : Infinity;
+
+        const newTrip = data.trips[0];
+        if (newTrip && newTrip.distance < 1.5 * prevDist) {
+          this.rideService.create({
+            id: `${Math.random()}`,
+            path: data,
+            routes,
+          });
+        }
       }, console.log);
   }
 
@@ -92,7 +100,7 @@ export class MatcherService {
 
     return `${startCoord.lon},${startCoord.lat};${endCoord.lon},${
       endCoord.lat
-      }`;
+    }`;
   }
 }
 

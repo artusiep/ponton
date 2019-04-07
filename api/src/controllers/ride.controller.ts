@@ -16,6 +16,11 @@ export class RideController {
     return this.rideService.findAll();
   }
 
+  @Get('last/:id')
+  findLast(@Param('id') id: string) {
+    return this.rideService.findLast(id);
+  }
+
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.rideService.findOne(id);

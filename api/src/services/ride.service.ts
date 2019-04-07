@@ -5,12 +5,16 @@ import { Ride } from './models/ride';
 @Injectable()
 export class RideService {
   create(ride: IRide): Promise<IRide> {
-    const rideModel = new Ride(ride);
+    const rideModel = new Ride({...ride, date: Date.now()});
     return rideModel.save();
   }
 
   findAll() {
     return Ride.find({});
+  }
+
+  findLast(userId: string) {
+    return Ride.findOne({'routes.user.id': userId}).sort({date: 'desc'});
   }
 
   findOne(id: string) {
