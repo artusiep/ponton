@@ -37,7 +37,7 @@ export const RouteWizard = () => {
     <Container>
       {step === 0 && (
         <RouteWizardQuestionStep
-          question="Czy wykonujesz tę trasę codziennie?"
+          question="Czy pokonujesz tę trasę codziennie?"
           onPick={result => {
             setProperties(state => [
               ...state,

@@ -8,6 +8,7 @@ import {
   TimePicker,
 } from 'antd';
 import styled from 'styled-components';
+import { MapPicker } from '../components/MapPicker';
 
 const { Title, Text } = Typography;
 
@@ -35,9 +36,7 @@ export const RouteWizardMapStep = ({
         {config.title}
       </Title>
       <Form {...formItemLayout}>
-        <div
-          style={{ width: '100%', height: '300px', backgroundColor: '#666' }}
-        />
+        <MapPicker onChange={() => null} />
 
         <Text
           type="secondary"
@@ -45,7 +44,7 @@ export const RouteWizardMapStep = ({
         >
           <small>
             Aby najlepiej dopasować Twoją trasę do istniejących, możemy wymagać
-            lekkiego przesunięcia punktu zrzutu. Jeśli Ci to nie odpowiada,
+            lekkiego przesunięcia wybranego punktu. Jeśli Ci to nie odpowiada,
             wyłącz poniższą opcję.
           </small>
         </Text>
