@@ -38,3 +38,8 @@ export type DropOffTimePreference = {
 export type PeriodicPreference = {
   kind: 'Periodic';
 } & IPreference<boolean>;
+
+
+export type DriverPreference = {
+  kind: 'Driver';
+} & IPreference<boolean>;

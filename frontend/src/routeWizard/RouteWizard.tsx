@@ -1,9 +1,18 @@
-import React, { Component, useState } from 'react';
-import { Form, Switch, Button } from 'antd';
+import React, { useState } from 'react';
+import { Button } from 'antd';
 import styled from 'styled-components';
 import { RouteWizardQuestionStep } from './RouteWizardQuestionStep';
 import { RouteWizardMapStep } from './RouteWizardMapStep';
 import { RouteWizardTimePickerStep } from './RouteWizardTimePickerStep';
+import { IRoute } from '../../../models/iRoute';
+import {
+  DriverPreference, DropOffTimePreference,
+  IPreference,
+  PeriodicPreference, PickupLocationPreference,
+  PickupTimePreference,
+} from '../../../models/iPreference';
+import { config } from '../shared/Config';
+import { post } from '../shared/Post';
 
 const Container = styled.div`
   height: 100vh;
@@ -17,14 +26,18 @@ const Container = styled.div`
   }
 `;
 
+const routeSender = (route: Partial<IRoute>) =>
+  post(`${config.api}/routes`, route);
+
 export const RouteWizard = () => {
   const [step, setStep] = useState<number>(0);
-  const [properties, setProperties] = useState<object[]>([]);
+  const [preferences, setPreferences] = useState<IPreference<any>[]>([]);
 
   const nextStep = () => setStep(state => state + 1);
 
   const PrevButton = () => (
     <Button
+      htmlType="button"
       type="default"
       onClick={() => setStep(state => state - 1)}
       style={{ width: '100%', marginTop: 10 }}
@@ -33,15 +46,19 @@ export const RouteWizard = () => {
     </Button>
   );
 
+  if (step === 6) {
+    routeSender({ preferences }).then(() => nextStep());
+  }
+
   return (
     <Container>
       {step === 0 && (
         <RouteWizardQuestionStep
           question="Czy pokonujesz tę trasę codziennie?"
           onPick={result => {
-            setProperties(state => [
+            setPreferences(state => [
               ...state,
-              { kind: 'periodic', properties: result },
+              { kind: 'Periodic', properties: result } as PeriodicPreference,
             ]);
             nextStep();
           }}
@@ -51,9 +68,9 @@ export const RouteWizard = () => {
         <RouteWizardQuestionStep
           question="Czy możesz być kierowcą?"
           onPick={result => {
-            setProperties(state => [
+            setPreferences(state => [
               ...state,
-              { kind: 'periodic', properties: false },
+              { kind: 'Driver', properties: result } as DriverPreference,
             ]);
             nextStep();
           }}
@@ -62,7 +79,13 @@ export const RouteWizard = () => {
       {step === 2 && (
         <div>
           <RouteWizardTimePickerStep
-            onSubmit={() => nextStep()}
+            onSubmit={properties => {
+              setPreferences(state => [
+                ...state,
+                { kind: 'PickupTime', properties } as PickupTimePreference,
+              ]);
+              nextStep();
+            }}
             config={{
               title: 'O której godzinie chcesz wyjechać?',
             }}
@@ -73,7 +96,13 @@ export const RouteWizard = () => {
       {step === 3 && (
         <div>
           <RouteWizardMapStep
-            onSubmit={() => nextStep()}
+            onSubmit={properties => {
+              setPreferences(state => [
+                ...state,
+                { kind: 'PickupLocation', properties } as PickupLocationPreference,
+              ]);
+              nextStep();
+            }}
             config={{
               title: 'Skąd odjeżdżasz?',
             }}
@@ -84,7 +113,13 @@ export const RouteWizard = () => {
       {step === 4 && (
         <div>
           <RouteWizardTimePickerStep
-            onSubmit={() => nextStep()}
+            onSubmit={properties => {
+              setPreferences(state => [
+                ...state,
+                { kind: 'DropoffTime', properties } as DropOffTimePreference,
+              ]);
+              nextStep();
+            }}
             config={{
               title: 'O której godzinie chcesz dotrzeć?',
             }}
@@ -95,7 +130,13 @@ export const RouteWizard = () => {
       {step === 5 && (
         <div>
           <RouteWizardMapStep
-            onSubmit={() => nextStep()}
+            onSubmit={properties => {
+              setPreferences(state => [
+                ...state,
+                { kind: 'PickupLocation', properties } as PickupLocationPreference,
+              ]);
+              nextStep();
+            }}
             config={{
               title: 'Dokąd chcesz dotrzeć?',
             }}
@@ -103,6 +144,8 @@ export const RouteWizard = () => {
           <PrevButton />
         </div>
       )}
+      {step === 7 && <div>Dzięki</div>}
+      <div>{JSON.stringify({preferences})}</div>
     </Container>
   );
 };
