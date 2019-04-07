@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../../../models/user';
+import { IUser } from '../../../models/iUser';
 
 @Injectable()
 export class UserService {
-  private users: User[] = [];
+  private users: IUser[] = [];
 
-  create(user: User) {
+  create(user: IUser) {
     this.users.push(user);
   }
 
-  findAll(): User[] {
+  findAll(): IUser[] {
     return this.users;
   }
 
@@ -17,7 +17,7 @@ export class UserService {
     return this.users.find(user => id === user.id);
   }
 
-  update(id: string, user: User) {
+  update(id: string, user: IUser) {
     const updatedUsers = this.users.map(oldUser =>
       id === oldUser.id ? user : oldUser,
     );

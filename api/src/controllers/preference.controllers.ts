@@ -1,10 +1,10 @@
-import { Controller, Get, Query, Post, Body, Put, Param, Delete } from '@nestjs/common';
-import { Preference } from '../../../models/preference';
+import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { IPreference } from '../../../models/iPreference';
 
 @Controller('preferences')
 export class PreferenceController {
   @Post()
-  create(@Body() preference: Preference) {
+  create(@Body() preference: IPreference) {
     return 'This action adds a new preference';
   }
 
@@ -19,7 +19,7 @@ export class PreferenceController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() preference: Preference) {
+  update(@Param('id') id: string, @Body() preference: IPreference) {
     return `This action updates a #${id} preference`;
   }
 

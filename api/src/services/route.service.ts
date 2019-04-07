@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Route } from '../../../models/route';
+import { IRoute } from '../../../models/iRoute';
 
 @Injectable()
 export class RouteService {
-  private routes: Route[] = [];
+  private routes: IRoute[] = [];
 
-  create(route: Route) {
+  create(route: IRoute) {
     this.routes.push(route);
   }
 
-  findAll(): Route[] {
+  findAll(): IRoute[] {
     return this.routes;
   }
 
@@ -17,7 +17,7 @@ export class RouteService {
     return this.routes.find(route => id === route.id);
   }
 
-  update(id: string, route: Route) {
+  update(id: string, route: IRoute) {
     const updatedRoutes = this.routes.map(oldRoute =>
       id === oldRoute.id ? route : oldRoute,
     );

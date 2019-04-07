@@ -1,10 +1,11 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import './App.css';
 import { RouteWizard } from './routeWizard/RouteWizard';
 
-class App extends Component {
+class App extends React.Component {
+
   render() {
-    return <RouteWizard/>;
+    return <RouteWizard />;
   }
 }
 

@@ -1,15 +1,15 @@
 import { Injectable } from '@nestjs/common';
-import { Ride } from '../../../models/ride';
+import { IRide } from '../../../models/iRide';
 
 @Injectable()
 export class RideService {
-  private rides: Ride[] = [];
+  private rides: IRide[] = [];
 
-  create(ride: Ride) {
+  create(ride: IRide) {
     this.rides.push(ride);
   }
 
-  findAll(): Ride[] {
+  findAll(): IRide[] {
     return this.rides;
   }
 
@@ -17,7 +17,7 @@ export class RideService {
     return this.rides.find(ride => id === ride.id);
   }
 
-  update(id: string, ride: Ride) {
+  update(id: string, ride: IRide) {
     const updatedRides = this.rides.map(oldRide =>
       id === oldRide.id ? ride : oldRide,
     );

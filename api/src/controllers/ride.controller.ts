@@ -1,19 +1,10 @@
-import {
-  Controller,
-  Get,
-  Query,
-  Post,
-  Body,
-  Put,
-  Param,
-  Delete,
-} from '@nestjs/common';
-import { Ride } from '../../../models/ride';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
+import { IRide } from '../../../models/iRide';
 
 @Controller('rides')
 export class RideController {
   @Post()
-  create(@Body() ride: Ride) {
+  create(@Body() ride: IRide) {
     return 'This action adds a new ride';
   }
 
@@ -28,7 +19,7 @@ export class RideController {
   }
 
   @Put(':id')
-  update(@Param('id') id: string, @Body() ride: Ride) {
+  update(@Param('id') id: string, @Body() ride: IRide) {
     return `This action updates a #${id} ride`;
   }
 }
