@@ -1,27 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { IRide } from '../../../models/iRide';
+import { Ride } from './models/ride';
 
 @Injectable()
 export class RideService {
-  private rides: IRide[] = [];
-
-  create(ride: IRide) {
-    this.rides.push(ride);
+  create(ride: IRide): Promise<IRide> {
+    const rideModel = new Ride(ride);
+    return rideModel.save();
   }
 
-  findAll(): IRide[] {
-    return this.rides;
+  findAll() {
+    return Ride.find({});
   }
 
   findOne(id: string) {
-    return this.rides.find(ride => id === ride.id);
+    return Ride.findOne({id});
   }
 
   update(id: string, ride: IRide) {
-    const updatedRides = this.rides.map(oldRide =>
-      id === oldRide.id ? ride : oldRide,
-    );
-
-    this.rides = updatedRides;
+    return 'Not implemented';
   }
 }

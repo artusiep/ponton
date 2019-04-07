@@ -1,27 +1,33 @@
 import { Injectable } from '@nestjs/common';
 import { IRoute } from '../../../models/iRoute';
+import { Route } from './models/route';
+import { MatcherService } from './matcher.service';
 
 @Injectable()
 export class RouteService {
-  private routes: IRoute[] = [];
+
+  constructor(private readonly matcherService: MatcherService) {}
 
   create(route: IRoute) {
-    this.routes.push(route);
+    const routeModel = new Route(route);
+    this.matcherService.handleRoute(route);
+    return routeModel.save();
   }
 
-  findAll(): IRoute[] {
-    return this.routes;
+  findAll() {
+    return Route.find({});
   }
 
-  findOne(id: string) {
-    return this.routes.find(route => id === route.id);
+  // tslint:disable-next-line:variable-name
+  findOne(_id: string) {
+    return Route.findOne({_id});
+  }
+
+  findUser(id: string) {
+    return Route.findOne({user: {id}});
   }
 
   update(id: string, route: IRoute) {
-    const updatedRoutes = this.routes.map(oldRoute =>
-      id === oldRoute.id ? route : oldRoute,
-    );
-
-    this.routes = updatedRoutes;
+    return 'Not implemented';
   }
 }
