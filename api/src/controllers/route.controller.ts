@@ -7,7 +7,7 @@ export class RouteController {
   constructor(private readonly matcherService: MatcherService) {}
   @Post()
   create(@Body() route: IRoute) {
-    return this.matcherService.test(route);
+    return this.matcherService.addRouteDistances(route);
   }
 
   @Get()

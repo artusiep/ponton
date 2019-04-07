@@ -10,11 +10,19 @@ import { Coord } from '../../../models/coord';
 
 @Injectable()
 export class MatcherService {
+  private routeDistances: RouteDistance[] = [];
+
   constructor(private readonly pythagorasService: PythagorasService) {}
 
   getBestMatches(route: IRoute) {}
 
-  test(route: IRoute): string {
+  addRouteDistances(route: IRoute) {
+    const coords = this.getCoordsFor(route);
+    const distane = this.pythagorasService.countDistance(coords[0], coords[1]);
+    this.routeDistances.push({ user: route.user, distance: distane });
+  }
+
+  private getCoordsFor(route: IRoute): [Coord, Coord] {
     const pickup = route.preferences.find(
       route => route.kind === 'PickupLocation',
     ) as PickupLocationPreference | undefined;
@@ -22,10 +30,6 @@ export class MatcherService {
     const dropOff = route.preferences.find(
       route => route.kind === 'DropoffLocation',
     ) as PickupLocationPreference | undefined;
-
-      if (pickup === undefined || dropOff === undefined) {
-        return "Zjebalo sie"
-      }
 
     const startCoord: Coord = {
       lat: pickup.properties.lat,
@@ -37,7 +41,7 @@ export class MatcherService {
       lon: dropOff.properties.lon,
     };
 
-    return String(this.pythagorasService.countDistance(startCoord, endCoord));
+    return [startCoord, endCoord];
   }
 }
 
