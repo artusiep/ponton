@@ -17,6 +17,10 @@ export class RideService {
     return Ride.findOne({id});
   }
 
+  async findUserRides(userId: string) {
+    return Ride.find({'routes.user.id': userId});
+  }
+
   update(id: string, ride: IRide) {
     return 'Not implemented';
   }

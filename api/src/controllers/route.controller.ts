@@ -2,19 +2,24 @@
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { IRoute } from '../../../models/iRoute';
 import { RouteService } from '../services/route.service';
+import { MatcherService } from '../services/matcher.service';
 
 @Controller('routes')
 export class RouteController {
-  constructor(private readonly routeService: RouteService) {
+  constructor(private readonly routeService: RouteService,
+              private readonly matcherService: MatcherService) {
   }
 
   @Post()
-  create(@Body() route: IRoute) {
-    return this.routeService.create(route);
+  async create(@Body() route: IRoute) {
+    const dbRoute = await this.routeService.create(route);
+    // this.matcherService.handleNewRoute();
+    return dbRoute;
   }
 
   @Get()
   findAll() {
+    this.matcherService.handleNewRoute();
     return this.routeService.findAll();
   }
   //
