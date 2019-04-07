@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { HttpModule, Module } from '@nestjs/common';
 import { UserController } from './controllers/user.controller';
 import { RideController } from './controllers/ride.controller';
 import { RouteController } from './controllers/route.controller';
@@ -14,7 +14,7 @@ import { MatcherService } from './services/matcher.service';
 import { PythagorasService } from './services/pythagoras.service';
 
 @Module({
-  imports: [],
+  imports: [HttpModule],
   controllers: [
     UserController,
     RideController,

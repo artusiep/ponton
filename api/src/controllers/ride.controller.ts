@@ -21,6 +21,11 @@ export class RideController {
     return this.rideService.findOne(id);
   }
 
+  @Get('user/:id')
+  findUserRides(@Param('id') id: string) {
+    return this.rideService.findUserRides(id);
+  }
+
   @Put(':id')
   update(@Param('id') id: string, @Body() ride: IRide) {
     return `This action updates a #${id} ride`;
