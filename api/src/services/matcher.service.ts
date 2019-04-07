@@ -16,7 +16,8 @@ export class MatcherService {
 
   getBestMatches(route: IRoute) {}
 
-  addRoute(route: IRoute) {
+  handleRoute(route: IRoute) {
+    //Download DB
     console.log(route);
     this.routeDistances = [];
 

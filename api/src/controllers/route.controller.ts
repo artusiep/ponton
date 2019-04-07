@@ -1,23 +1,32 @@
+
 import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { IRoute } from '../../../models/iRoute';
-import { MatcherService } from '../services/matcher.service';
+import { RouteService } from '../services/route.service';
 
 @Controller('routes')
 export class RouteController {
-  constructor(private readonly matcherService: MatcherService) {}
+  constructor(private readonly routeService: RouteService) {
+  }
+
   @Post()
   create(@Body() route: IRoute) {
-    return this.matcherService.addRoute(route);
+    return this.routeService.create(route);
   }
 
   @Get()
   findAll() {
-    return this.matcherService.readDistances();
+    return this.routeService.findAll();
   }
+  //
+  @Get('user/:id')
+    findOne(@Param('id') id: string) {
+      return this.routeService.findUser(id);
+    }
 
-  @Get(':id')
-  findOne(@Param('id') id: string) {
-    return `This action returns a #${id} route`;
+  /* tslint:disable:variable-name */
+  @Get('id/:_id')
+  find(@Param('_id') id: string) {
+    return this.routeService.findOne(id);
   }
 
   @Put(':id')
