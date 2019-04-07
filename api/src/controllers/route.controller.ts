@@ -6,8 +6,8 @@ import { MatcherService } from '../services/matcher.service';
 export class RouteController {
   constructor(private readonly matcherService: MatcherService) {}
   @Post()
-  create(@Body() routes: [IRoute]) {
-    return this.matcherService.addRoutes(routes);
+  create(@Body() route: IRoute) {
+    return this.matcherService.addRoute(route);
   }
 
   @Get()
