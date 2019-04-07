@@ -1,10 +1,14 @@
-import React, { Component } from 'react';
+import * as React from 'react';
 import './App.css';
 import { RouteWizard } from './routeWizard/RouteWizard';
+import { MapPicker } from './components/MapPicker';
 
-class App extends Component {
+class App extends React.Component {
+  handleOnChange = () => {
+  }
+
   render() {
-    return <RouteWizard/>;
+    return <MapPicker height={500} width={500} onChange={ this.handleOnChange } />;
   }
 }
 
