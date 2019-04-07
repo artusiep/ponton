@@ -1,30 +1,29 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, Put } from '@nestjs/common';
 import { IPath } from '../../../models/iPath';
+import { PathService } from '../services/path.service';
 
 @Controller('Paths')
 export class PathController {
+  constructor(private readonly pathService: PathService) {
+  }
+
   @Post()
   create(@Body() path: IPath) {
-    return 'This action adds a new path';
+    return this.pathService.create(path);
   }
 
   @Get()
   findAll() {
-    return `This action returns all path items`;
+    return this.pathService.findAll();
   }
 
   @Get(':id')
   findOne(@Param('id') id: string) {
-    return `This action returns a #${id} path`;
+    return this.pathService.findOne(id);
   }
 
   @Put(':id')
   update(@Param('id') id: string, @Body() path: IPath) {
     return `This action updates a #${id} path`;
-  }
-
-  @Delete(':id')
-  remove(@Param('id') id: string) {
-    return `This action removes a #${id} path`;
   }
 }

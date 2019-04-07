@@ -5,7 +5,7 @@ import { IPreference } from '../../../models/iPreference';
 export class PreferenceController {
   @Post()
   create(@Body() preference: IPreference) {
-    return 'This action adds a new preference';
+    return `This action creates preference items`;
   }
 
   @Get()
