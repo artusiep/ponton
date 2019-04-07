@@ -1,16 +1,11 @@
 import { Injectable } from '@nestjs/common';
 import { IRoute } from '../../../models/iRoute';
 import { Route } from './models/route';
-import { MatcherService } from './matcher.service';
 
 @Injectable()
 export class RouteService {
-
-  constructor(private readonly matcherService: MatcherService) {}
-
   create(route: IRoute) {
     const routeModel = new Route(route);
-    this.matcherService.handleRoute(route);
     return routeModel.save();
   }
 

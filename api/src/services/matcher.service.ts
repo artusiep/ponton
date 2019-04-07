@@ -1,63 +1,98 @@
-import { Injectable } from '@nestjs/common';
+import { HttpService, Injectable } from '@nestjs/common';
 import { IUser } from '../../../models/iUser';
 import { IRoute } from '../../../models/iRoute';
 import { PythagorasService } from './pythagoras.service';
-import {
-  PreferenceType,
-  PickupLocationPreference,
-} from '../../../models/iPreference';
-import { Coord } from '../../../models/coord';
+import { PickupLocationPreference } from '../../../models/iPreference';
+import { RouteService } from './route.service';
+import { RideService } from './ride.service';
 
 @Injectable()
 export class MatcherService {
-  private routeDistances: RouteDistance[] = [];
+  private static readonly apiUrl =
+    'https://api.mapbox.com/optimized-trips/v1/mapbox/driving';
+  private static readonly apiKey =
+    'pk.eyJ1IjoiZ3V6emlrc2VuOTYiLCJhIjoiY2p1NXNhdGt3MWMxaDQzc2FlYnB5cmg4YiJ9.6ol5G64nkRQX4YJHdr6B0w';
 
-  constructor(private readonly pythagorasService: PythagorasService) {}
-
-  getBestMatches(route: IRoute) {}
-
-  handleRoute(route: IRoute) {
-    //Download DB
-    console.log(route);
-    this.routeDistances = [];
-
-    const coords = this.getCoordsFor(route);
-    const distane = this.pythagorasService.countDistance(coords[0], coords[1]);
-
-    this.routeDistances.push({ user: route.user, distance: distane });
-
-    return route;
+  constructor(
+    private readonly pythagorasService: PythagorasService,
+    private readonly httpService: HttpService,
+    private readonly routeService: RouteService,
+    private readonly rideService: RideService,
+  ) {
   }
 
-  readDistances(): string {
-    var distances = '';
-    this.routeDistances.forEach(element => {
-      distances += String(element.distance) + ' ';
-    });
-
-    return distances;
+  getBestMatches(route: IRoute) {
   }
 
-  private getCoordsFor(route: IRoute): [Coord, Coord] {
-    const pickup = route.preferences.find(
-      route => route.kind === 'PickupLocation',
-    ) as PickupLocationPreference | undefined;
+  async handleNewRoute() {
+    const routes = await this.routeService.findAll().exec();
+    const coordinates = routes.map(r => this.getCoordsFor(r));
+    if (!(coordinates.length > 0)) {
+      return;
+    }
+
+    const [left, right] = coordinates[0].split(';');
+    const coords = `${left}${
+      routes.length >= 2 ? ';' + coordinates.slice(1).join(';') : ''
+      };${right}`;
+
+    const distributions = `${
+      routes.length >= 2
+        ? Array(Math.floor(routes.length - 1))
+          .fill(null)
+          .map((_, i) => `${i * 2 + 1},${i * 2 + 2}`)
+          .join(';')
+        : ''
+      }`;
+
+    console.log(
+      `${MatcherService.apiUrl}/${coords}?distributions=${distributions}`,
+    );
+
+    this.httpService
+      .get(
+        `${
+          MatcherService.apiUrl
+          }/${coords}?distributions=${distributions}&radiuses=1500;1500;1500;1500`,
+        {
+          params: {
+            roundtrip: 'false',
+            overview: 'full',
+            steps: 'true',
+            geometries: 'geojson',
+            source: 'first',
+            destination: 'last',
+            access_token: MatcherService.apiKey,
+          },
+        },
+      )
+      .subscribe(response => {
+        console.log(response.data);
+        const data = response.data;
+        this.rideService.create({
+          id: 'blah',
+          path: data,
+          routes,
+        });
+      }, console.log);
+  }
+
+  private getCoordsFor(route: IRoute): string {
+    const pickup = route.preferences.find(r => r.kind === 'PickupLocation') as
+      | PickupLocationPreference
+      | undefined;
 
     const dropOff = route.preferences.find(
-      route => route.kind === 'DropoffLocation',
+      r => r.kind === 'DropoffLocation',
     ) as PickupLocationPreference | undefined;
 
-    const startCoord: Coord = {
-      lat: pickup.properties.lat,
-      lon: pickup.properties.lon,
-    };
+    const startCoord = pickup.properties;
 
-    const endCoord: Coord = {
-      lat: dropOff.properties.lat,
-      lon: dropOff.properties.lon,
-    };
+    const endCoord = dropOff.properties;
 
-    return [startCoord, endCoord];
+    return `${startCoord.lon},${startCoord.lat};${endCoord.lon},${
+      endCoord.lat
+      }`;
   }
 }
 
