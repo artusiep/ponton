@@ -6,6 +6,10 @@ import { PathController } from './controllers/path.controllers';
 import { PreferenceController } from './controllers/preference.controllers';
 import { UserService } from './services/user.service';
 import { MongoService } from './services/mongo.service';
+import { RideService } from './services/ride.service';
+import { PathService } from './services/path.service';
+import { PreferenceService } from './services/preference.servce';
+import { RouteService } from './services/route.service';
 import { MatcherService } from './services/matcher.service';
 import { PythagorasService } from './services/pythagoras.service';
 
@@ -18,6 +22,6 @@ import { PythagorasService } from './services/pythagoras.service';
     PathController,
     PreferenceController,
   ],
-  providers: [UserService, MongoService, MatcherService, PythagorasService],
+  providers: [UserService, MongoService, RideService, PathService, PreferenceService, RouteService, MatcherService, PythagorasService],
 })
 export class AppModule {}

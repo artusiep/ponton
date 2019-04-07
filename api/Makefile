@@ -1,3 +1,6 @@
+start:
+	yarn start
+
 set-up-mongo:
 	docker run -p 27017:27017 --name ponton mongo
 

@@ -1,27 +1,25 @@
 import { Injectable } from '@nestjs/common';
 import { IUser } from '../../../models/iUser';
+import { User } from './models/user';
 
 @Injectable()
 export class UserService {
-  private users: IUser[] = [];
 
   create(user: IUser) {
-    this.users.push(user);
+    const userModel = new User(user);
+    return userModel.save();
   }
 
-  findAll(): IUser[] {
-    return this.users;
+  findAll() {
+    return User.find({});
   }
 
   findOne(id: string) {
-    return this.users.find(user => id === user.id);
+    return User.findOne({id});
+
   }
 
   update(id: string, user: IUser) {
-    const updatedUsers = this.users.map(oldUser =>
-      id === oldUser.id ? user : oldUser,
-    );
-
-    this.users = updatedUsers;
+    return 'Not implemented';
   }
 }
