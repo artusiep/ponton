@@ -36,6 +36,7 @@
   "devDependencies": {
     "@types/react-map-gl": "^4.1.1",
     "@types/styled-components": "^4.1.13",
-    "@types/turf": "^3.5.32"
+    "@types/turf": "^3.5.32",
+    "prettier": "^1.16.4"
   }
 }

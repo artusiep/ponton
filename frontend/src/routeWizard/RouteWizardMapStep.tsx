@@ -1,13 +1,6 @@
-import React, { Component, useState } from 'react';
-import {
-  Form,
-  Switch,
-  Button,
-  InputNumber,
-  Typography,
-  TimePicker,
-} from 'antd';
-import styled from 'styled-components';
+import React from 'react';
+import { Button, Form, Switch, Typography } from 'antd';
+import { MapPicker } from '../components/MapPicker';
 
 const { Title, Text } = Typography;
 
@@ -26,17 +19,29 @@ export const RouteWizardMapStep = ({
   onSubmit,
   config,
 }: {
-  onSubmit: () => void;
+  onSubmit: (value: { lat: number; lon: number; radius: number }) => void;
   config: { title: string };
 }) => {
+  const [state, setState] = React.useState({
+    lat: 0,
+    lon: 0,
+    radius: 500,
+  });
+
   return (
     <div>
-      <Title style={{ textAlign: 'center' }}>
-        {config.title}
-      </Title>
+      <Title style={{ textAlign: 'center' }}>{config.title}</Title>
       <Form {...formItemLayout}>
-        <div
-          style={{ width: '100%', height: '300px', backgroundColor: '#666' }}
+        <MapPicker
+          onChange={value =>
+            setState(state => ({
+              ...state,
+              lat: value ? value.lat : 0,
+              lon: value ? value.lng : 0,
+            }))
+          }
+          height={400}
+          width={500}
         />
 
         <Text
@@ -45,19 +50,27 @@ export const RouteWizardMapStep = ({
         >
           <small>
             Aby najlepiej dopasować Twoją trasę do istniejących, możemy wymagać
-            lekkiego przesunięcia punktu zrzutu. Jeśli Ci to nie odpowiada,
+            lekkiego przesunięcia wybranego punktu. Jeśli Ci to nie odpowiada,
             wyłącz poniższą opcję.
           </small>
         </Text>
         <Form.Item label="Poszerzony zasięg">
-          <Switch defaultChecked />
+          <Switch
+            defaultChecked
+            onChange={checked =>
+              setState(state => ({
+                ...state,
+                radius: checked ? 500 : 0,
+              }))
+            }
+          />
         </Form.Item>
 
         <Button
           type="primary"
           htmlType="submit"
           style={{ width: '100%' }}
-          onClick={() => onSubmit()}
+          onClick={() => onSubmit(state)}
         >
           Zatwierdź
         </Button>
