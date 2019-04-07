@@ -16,10 +16,27 @@ export class MatcherService {
 
   getBestMatches(route: IRoute) {}
 
-  addRouteDistances(route: IRoute) {
-    const coords = this.getCoordsFor(route);
-    const distane = this.pythagorasService.countDistance(coords[0], coords[1]);
-    this.routeDistances.push({ user: route.user, distance: distane });
+  addRoutes(routes: [IRoute]) {
+    this.routeDistances = [];
+
+    routes.forEach(route => {
+      const coords = this.getCoordsFor(route);
+      const distane = this.pythagorasService.countDistance(
+        coords[0],
+        coords[1],
+      );
+
+      this.routeDistances.push({ user: route.user, distance: distane });
+    });
+  }
+
+  readDistances(): String {
+    var distances = '';
+    this.routeDistances.forEach(element => {
+      distances += String(element.distance) + ' ';
+    });
+
+    return distances;
   }
 
   private getCoordsFor(route: IRoute): [Coord, Coord] {

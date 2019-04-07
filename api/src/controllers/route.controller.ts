@@ -6,13 +6,13 @@ import { MatcherService } from '../services/matcher.service';
 export class RouteController {
   constructor(private readonly matcherService: MatcherService) {}
   @Post()
-  create(@Body() route: IRoute) {
-    return this.matcherService.addRouteDistances(route);
+  create(@Body() routes: [IRoute]) {
+    return this.matcherService.addRoutes(routes);
   }
 
   @Get()
   findAll() {
-    return `This action returns all route items`;
+    return this.matcherService.readDistances();
   }
 
   @Get(':id')
