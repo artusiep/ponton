@@ -24,9 +24,7 @@ export class Rides extends React.Component<any, any> {
 
   componentDidMount(): void {
     fetchLastRide(this.props.user)
-      .then(function(response) {
-        return response.json();
-      })
+      .then((response) => response.json())
       .then((ride: any) => {
         this.setState({ data: ride ? ride.path : null });
       });
@@ -38,7 +36,7 @@ export class Rides extends React.Component<any, any> {
         <Title>Twoje zaplanowane przejazdy</Title>
 
         {this.state.data && (
-          <RideMap width={1000} height={560} data={this.state.data} />
+          <RideMap width={1380} height={700} data={this.state.data} />
         )}
       </Container>
     );
