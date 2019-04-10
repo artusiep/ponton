@@ -71,11 +71,12 @@ export class MatcherService {
         console.log(response.data);
         const data = response.data;
         const ride = await this.rideService.findLast(routes[0].user.id).exec();
-        const trip = ride.path.trips[0];
-        const prevDist = trip ? trip.distance : Infinity;
+        const trip = ride ? ride.path.trips[0] : { distance: Infinity };
+        const prevDist = trip.distance;
 
         const newTrip = data.trips[0];
         if (newTrip && newTrip.distance < 1.5 * prevDist) {
+          console.log("Saving rides o DB");
           this.rideService.create({
             id: `${Math.random()}`,
             path: data,

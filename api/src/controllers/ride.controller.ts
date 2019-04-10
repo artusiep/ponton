@@ -4,8 +4,7 @@ import { RideService } from '../services/ride.service';
 
 @Controller('rides')
 export class RideController {
-  constructor(private readonly rideService: RideService) {
-  }
+  constructor(private readonly rideService: RideService) {}
   @Post()
   create(@Body() ride: IRide) {
     return this.rideService.create(ride);
@@ -17,8 +16,9 @@ export class RideController {
   }
 
   @Get('last/:id')
-  findLast(@Param('id') id: string) {
-    return this.rideService.findLast(id);
+  async findLast(@Param('id') id: string) {
+    const last = await this.rideService.findLast(id).exec();
+    return last || {};
   }
 
   @Get(':id')

@@ -6,3 +6,5 @@ set-up-mongo:
 
 stop-mongo:
 	docker rm -f ponton
+
+restart: stop-mongo set-up-mongo
