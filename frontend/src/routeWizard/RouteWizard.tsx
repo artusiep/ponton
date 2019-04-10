@@ -1,25 +1,30 @@
 import React, { useState } from 'react';
-import { Button } from 'antd';
+import { Button, Typography } from 'antd';
 import styled from 'styled-components';
 import { RouteWizardQuestionStep } from './RouteWizardQuestionStep';
 import { RouteWizardMapStep } from './RouteWizardMapStep';
 import { RouteWizardTimePickerStep } from './RouteWizardTimePickerStep';
 import { IRoute } from '../../../models/iRoute';
 import {
-  DriverPreference, DropOffTimePreference,
+  DriverPreference,
+  DropOffTimePreference,
   IPreference,
-  PeriodicPreference, PickupLocationPreference,
+  PeriodicPreference,
+  PickupLocationPreference,
   PickupTimePreference,
 } from '../../../models/iPreference';
 import { config } from '../shared/Config';
 import { post } from '../shared/Post';
 
+const { Title } = Typography;
+
 const Container = styled.div`
-  height: 100vh;
+  height: calc(100vh - 57px);
   display: flex;
   justify-content: center;
   align-items: center;
   flex-direction: column;
+  background-color: #f4f5f4;
 
   & > * {
     width: 500px;
@@ -29,7 +34,7 @@ const Container = styled.div`
 const routeSender = (route: Partial<IRoute>) =>
   post(`${config.api}/routes`, route);
 
-export const RouteWizard = () => {
+export const RouteWizard = ({ user }: { user: string }) => {
   const [step, setStep] = useState<number>(0);
   const [preferences, setPreferences] = useState<IPreference<any>[]>([]);
 
@@ -47,7 +52,7 @@ export const RouteWizard = () => {
   );
 
   if (step === 6) {
-    routeSender({ preferences }).then(() => nextStep());
+    routeSender({ preferences, user: { id: user }, id: `${Math.random()}` }).then(() => nextStep());
   }
 
   return (
@@ -99,7 +104,10 @@ export const RouteWizard = () => {
             onSubmit={properties => {
               setPreferences(state => [
                 ...state,
-                { kind: 'PickupLocation', properties } as PickupLocationPreference,
+                {
+                  kind: 'PickupLocation',
+                  properties,
+                } as PickupLocationPreference,
               ]);
               nextStep();
             }}
@@ -133,7 +141,10 @@ export const RouteWizard = () => {
             onSubmit={properties => {
               setPreferences(state => [
                 ...state,
-                { kind: 'PickupLocation', properties } as PickupLocationPreference,
+                {
+                  kind: 'DropoffLocation',
+                  properties,
+                } as PickupLocationPreference,
               ]);
               nextStep();
             }}
@@ -144,8 +155,7 @@ export const RouteWizard = () => {
           <PrevButton />
         </div>
       )}
-      {step === 7 && <div>Dzięki</div>}
-      <div>{JSON.stringify({preferences})}</div>
+      {step === 7 && <Title>Twoja trasa została zapisana</Title>}
     </Container>
   );
 };
